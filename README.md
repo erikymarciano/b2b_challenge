@@ -51,6 +51,26 @@ docker-compose up --build
 
 ---
 
+## Testes
+
+- Testes unitários foram implementados usando a biblioteca nativa do Django (unittest) e estão localizados em:
+
+backend/station/tests/test_views.py
+
+Eles cobrem as principais regras de negócio:
+
+- Criação de estações
+- Geração automática de pedidos de coleta ao atingir 80%
+- Cancelamento automático de pedidos de coleta quando o volume cai abaixo de 80%
+- Confirmação de coleta
+- Registro de ações no histórico
+
+### Para rodar os testes basta executar o seguinte comando com o backend rodando:
+```bash
+docker-compose exec backend python manage.py test
+```
+---
+
 ## Como rodar o frontend localmente
 
 ### Pré-requisitos:
