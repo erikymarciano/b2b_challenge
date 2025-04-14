@@ -20,7 +20,6 @@ import {
 import { Station, ActionHistory } from "../types";
 import HistoryModal from "./HistoryModal";
 
-
 interface Props {
   station: Station;
   onVolumeUpdated: () => void;
@@ -31,8 +30,11 @@ export default function StationCard({ station, onVolumeUpdated }: Props) {
   const [loading, setLoading] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
   const [history, setHistory] = useState<ActionHistory[]>([]);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    message: string;
+    severity: "success" | "error";
+  }>({ open: false, message: "", severity: "success" });
   const hasPendingPickup = station.volume >= 80;
 
   useEffect(() => {
@@ -43,6 +45,10 @@ export default function StationCard({ station, onVolumeUpdated }: Props) {
     const data = await fetchStationHistory(station.id);
     setHistory(data);
     setOpenHistory(true);
+  };
+
+  const showSnackbar = (message: string, severity: "success" | "error") => {
+    setSnackbar({ open: true, message, severity });
   };
 
   const handleUpdate = async () => {
@@ -60,10 +66,11 @@ export default function StationCard({ station, onVolumeUpdated }: Props) {
       await updateStationVolume(station.id, newVolume);
       setNewVolume("");
       onVolumeUpdated();
-      setSnackbarOpen(true);
+      showSnackbar("Volume atualizado com sucesso!", "success");
+    } catch (err) {
+      console.error(err);
+      showSnackbar("Erro ao atualizar volume", "error");
     } finally {
-      setSnackbarMessage("Volume atualizado com sucesso!");
-      setSnackbarOpen(true);
       setLoading(false);
     }
   };
@@ -73,9 +80,11 @@ export default function StationCard({ station, onVolumeUpdated }: Props) {
     try {
       await confirmStationPickup(station.id);
       onVolumeUpdated();
+      showSnackbar("Coleta confirmada com sucesso!", "success");
+    } catch (err) {
+      console.error(err);
+      showSnackbar("Erro ao confirmar coleta", "error");
     } finally {
-      setSnackbarMessage("Coleta confirmada com sucesso!");
-      setSnackbarOpen(true);
       setLoading(false);
     }
   };
@@ -85,7 +94,7 @@ export default function StationCard({ station, onVolumeUpdated }: Props) {
       <Card
         sx={{
           width: "450px",
-          m: 2,
+          m: 1,
         }}
       >
         <CardContent>
@@ -172,18 +181,18 @@ export default function StationCard({ station, onVolumeUpdated }: Props) {
       />
 
       <Snackbar
-        open={snackbarOpen}
+        open={snackbar.open}
         autoHideDuration={3000}
-        onClose={() => setSnackbarOpen(false)}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert
-          onClose={() => setSnackbarOpen(false)}
-          severity="success"
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
           variant="filled"
           sx={{ width: "100%" }}
         >
-          {snackbarMessage}
+          {snackbar.message}
         </Alert>
       </Snackbar>
     </>
