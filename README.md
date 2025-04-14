@@ -33,8 +33,8 @@ Este projeto consiste em um sistema para gerenciamento de estações de armazena
 
 ```bash
 # Clone o projeto
-git clone 
-cd 
+git clone https://github.com/erikymarciano/b2b_challenge.git
+cd b2b_challenge
 
 # Suba o backend
 docker-compose up --build
@@ -96,6 +96,7 @@ npm run dev
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
+│   │   ├── pages/
 │   │   ├── services/
 │   │   └── types.ts
 └── docker-compose.yml
