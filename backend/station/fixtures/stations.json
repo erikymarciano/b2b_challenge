@@ -1,0 +1,26 @@
+[
+    {
+      "model": "station.station",
+      "pk": 1,
+      "fields": {
+        "name": "Estação A",
+        "volume": 0
+      }
+    },
+    {
+      "model": "station.station",
+      "pk": 2,
+      "fields": {
+        "name": "Estação B",
+        "volume": 0
+      }
+    },
+    {
+      "model": "station.station",
+      "pk": 3,
+      "fields": {
+        "name": "Estação C",
+        "volume": 0
+      }
+    }
+]
