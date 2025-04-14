@@ -39,6 +39,7 @@ cd b2b_challenge
 # Suba o backend
 docker-compose up --build
 ```
+- O container roda uma fixture e ja cria automaticamente três estações.
 
 > A API estará disponível em: `http://localhost:8000/api/`
 
